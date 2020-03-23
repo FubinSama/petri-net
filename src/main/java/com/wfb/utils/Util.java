@@ -3,6 +3,8 @@ package com.wfb.utils;
 import com.wfb.base.PlaceNode;
 import com.wfb.base.TransitionNode;
 import com.wfb.place.LockPlaceNode;
+import com.wfb.place.NotifyAllPlaceNode;
+import com.wfb.place.SourcePlaceNode;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -11,7 +13,7 @@ import java.util.List;
 public class Util {
     public static List<String> iidToLineMap;
 
-    public static String getIidToLine(Integer iid) {
+    public static String getIidToLine(int iid) {
         if (iidToLineMap == null) return null;
         return iidToLineMap.get(iid).replaceAll(".html#", "#");
     }
@@ -29,7 +31,14 @@ public class Util {
     }
 
     public static String getDescription(PlaceNode placeNode) {
-        if (placeNode instanceof LockPlaceNode) return "this is a lock place";
-        else return "this is a lock place, thread is: " + placeNode.getThreadNumber();
+        if (placeNode instanceof LockPlaceNode)
+            return "this is a lock place node";
+        else if (placeNode instanceof SourcePlaceNode)
+            return "this is a source place node, it belongs thread:" + placeNode.getThreadNumber();
+        else if (placeNode instanceof NotifyAllPlaceNode)
+            return "this is a notifyAll place node, it belongs thread:" + placeNode.getThreadNumber();
+        else {
+            return "this is a selection place node, it belongs thread:" + placeNode.getThreadNumber();
+        }
     }
 }

@@ -27,10 +27,15 @@ public class AcqTransitionNode extends TransitionNodeAdapter {
     }
 
     @Override
+    public void changeDownPlaceNode(PlaceNode oldPlaceNode, PlaceNode newPlaceNode) {
+        if (downPlaceNode == oldPlaceNode) downPlaceNode = newPlaceNode;
+    }
+
+    @Override
     public void traversal(NetTraversal netTraversal) {
-        if (!netTraversal.traversalTPFlow(this, downPlaceNode)) return;
-        netTraversal.transitionTraversal(this, downPlaceNode);
-        if (netTraversal.sholdTraversal(downPlaceNode))
+        if (downPlaceNode == null) return;
+        netTraversal.printTPFlow(this, downPlaceNode);
+        if (netTraversal.isTraversalPlaceNode(this, downPlaceNode))
             downPlaceNode.traversal(netTraversal);
     }
 }

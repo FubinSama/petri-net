@@ -26,11 +26,17 @@ public class RelTransitionNode extends TransitionNodeAdapter {
     }
 
     @Override
+    public void changeDownPlaceNode(PlaceNode oldPlaceNode, PlaceNode newPlaceNode) {
+        for (PlaceNode downPlaceNode: downPlaceNodes){
+            if (downPlaceNode == oldPlaceNode) downPlaceNode = newPlaceNode;
+        }
+    }
+
+    @Override
     public void traversal(NetTraversal netTraversal) {
         for (PlaceNode placeNode: downPlaceNodes) {
-            if (!netTraversal.traversalTPFlow(this, placeNode)) continue;
-            netTraversal.transitionTraversal(this, placeNode);
-            if (netTraversal.sholdTraversal(placeNode))
+            netTraversal.printTPFlow(this, placeNode);
+            if (netTraversal.isTraversalPlaceNode(this, placeNode))
                 placeNode.traversal(netTraversal);
         }
     }

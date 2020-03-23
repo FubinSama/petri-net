@@ -9,5 +9,6 @@ public interface TransitionNode {
     String getDescription();
     void addUpPlaceNode(PlaceNode node);
     void addDownPlaceNode(PlaceNode node);
+    void changeDownPlaceNode(PlaceNode oldPlaceNode, PlaceNode newPlaceNode);
     void traversal(NetTraversal netTraversal);
 }

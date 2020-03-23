@@ -8,7 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 public class PlaceNodeAdapter implements PlaceNode {
     @Getter private int threadNumber;
-    private int tokenCnt;
+    @Getter private int tokenCnt;
     @Getter private String name;
 
     @Override
@@ -27,12 +27,12 @@ public class PlaceNodeAdapter implements PlaceNode {
     }
 
     @Override
-    public void loseToken() {
+    public void subToken() {
         tokenCnt--;
     }
 
     @Override
-    public void getToken() {
+    public void incToken() {
         tokenCnt++;
     }
 

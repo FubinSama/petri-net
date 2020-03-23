@@ -3,17 +3,13 @@ package com.wfb.transition;
 import com.wfb.adapter.TransitionNodeAdapter;
 import com.wfb.base.PlaceNode;
 import com.wfb.flow.NetTraversal;
-import lombok.*;
 
-public class WriteTransitionNode extends TransitionNodeAdapter {
+public class Notify2TransitionNode extends TransitionNodeAdapter {
     private PlaceNode upPlaceNode;
     private PlaceNode downPlaceNode;
 
-    @Getter private long memory;
-
-    public WriteTransitionNode(int iid, int threadNumber, String name, long memory, String description) {
+    public Notify2TransitionNode(int iid, int threadNumber, String name, String description) {
         super(iid, threadNumber, name, description);
-        this.memory = memory;
     }
 
     @Override

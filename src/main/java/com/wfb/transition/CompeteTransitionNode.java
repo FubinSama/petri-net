@@ -3,22 +3,28 @@ package com.wfb.transition;
 import com.wfb.adapter.TransitionNodeAdapter;
 import com.wfb.base.PlaceNode;
 import com.wfb.flow.NetTraversal;
-import lombok.*;
 
-public class WriteTransitionNode extends TransitionNodeAdapter {
-    private PlaceNode upPlaceNode;
+import java.util.ArrayList;
+import java.util.List;
+
+public class CompeteTransitionNode extends TransitionNodeAdapter {
+
+    private List<PlaceNode> upPlaceNodes = new ArrayList<>();
     private PlaceNode downPlaceNode;
 
-    @Getter private long memory;
-
-    public WriteTransitionNode(int iid, int threadNumber, String name, long memory, String description) {
+    /**
+     * @apiNote 先添加wakeAfterPlaceNode，再添加lockPlaceNode
+     */
+    public CompeteTransitionNode(int iid, int threadNumber, String name, String description) {
         super(iid, threadNumber, name, description);
-        this.memory = memory;
     }
 
+    /**
+     * @param node：wakeAfterPlaceNode、lockPlaceNode
+     */
     @Override
     public void addUpPlaceNode(PlaceNode node) {
-        upPlaceNode = node;
+        upPlaceNodes.add(node);
     }
 
     @Override

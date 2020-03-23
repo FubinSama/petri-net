@@ -25,6 +25,11 @@ public class TransitionNodeAdapter implements TransitionNode {
     }
 
     @Override
+    public void changeDownPlaceNode(PlaceNode oldPlaceNode, PlaceNode newPlaceNode) {
+
+    }
+
+    @Override
     public void traversal(NetTraversal netTraversal) {
 
     }

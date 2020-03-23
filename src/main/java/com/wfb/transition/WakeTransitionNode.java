@@ -3,22 +3,28 @@ package com.wfb.transition;
 import com.wfb.adapter.TransitionNodeAdapter;
 import com.wfb.base.PlaceNode;
 import com.wfb.flow.NetTraversal;
-import lombok.*;
 
-public class WriteTransitionNode extends TransitionNodeAdapter {
-    private PlaceNode upPlaceNode;
+import java.util.ArrayList;
+import java.util.List;
+
+public class WakeTransitionNode extends TransitionNodeAdapter {
+
+    private List<PlaceNode> upPlaceNodes = new ArrayList<>();
     private PlaceNode downPlaceNode;
 
-    @Getter private long memory;
-
-    public WriteTransitionNode(int iid, int threadNumber, String name, long memory, String description) {
+    /**
+     * @apiNote 先添加wakeBeforePlaceNode，再添加waitAfterPlaceNode
+     */
+    public WakeTransitionNode(int iid, int threadNumber, String name, String description) {
         super(iid, threadNumber, name, description);
-        this.memory = memory;
     }
 
+    /**
+     * @param node: wakeBeforePlaceNode、waitAfterPlaceNode
+     */
     @Override
     public void addUpPlaceNode(PlaceNode node) {
-        upPlaceNode = node;
+        upPlaceNodes.add(node);
     }
 
     @Override
@@ -33,9 +39,17 @@ public class WriteTransitionNode extends TransitionNodeAdapter {
 
     @Override
     public void traversal(NetTraversal netTraversal) {
+        for (PlaceNode placeNode: upPlaceNodes) {
+            if (netTraversal.isTraversalTransitionNode(placeNode, this))
+                netTraversal.printPTFlow(placeNode, this);
+        }
         if (downPlaceNode == null) return;
         netTraversal.printTPFlow(this, downPlaceNode);
         if (netTraversal.isTraversalPlaceNode(this, downPlaceNode))
             downPlaceNode.traversal(netTraversal);
+    }
+
+    public PlaceNode getWakeBeforePlaceNode() {
+        return upPlaceNodes.get(0);
     }
 }

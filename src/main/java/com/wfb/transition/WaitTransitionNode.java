@@ -3,11 +3,18 @@ package com.wfb.transition;
 import com.wfb.adapter.TransitionNodeAdapter;
 import com.wfb.base.PlaceNode;
 import com.wfb.flow.NetTraversal;
+import com.wfb.place.SourcePlaceNode;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class WaitTransitionNode extends TransitionNodeAdapter {
     private PlaceNode upPlaceNode;
-    private PlaceNode downPlaceNode;
+    private List<PlaceNode> downPlaceNodes = new ArrayList<>();
 
+    /**
+     * @apiNote 先添加waitAfterPlaceNode，再添加lockPlaceNode
+     */
     public WaitTransitionNode(int iid, int threadNumber, String name, String description) {
         super(iid, threadNumber, name, description);
     }
@@ -17,16 +24,32 @@ public class WaitTransitionNode extends TransitionNodeAdapter {
         upPlaceNode = node;
     }
 
+    /**
+     * @param node : waitAfterPlaceNode、lockPlaceNode
+     */
     @Override
     public void addDownPlaceNode(PlaceNode node) {
-        downPlaceNode = node;
+        downPlaceNodes.add(node);
+    }
+
+    @Override
+    public void changeDownPlaceNode(PlaceNode oldPlaceNode, PlaceNode newPlaceNode) {
+        for (PlaceNode downPlaceNode: downPlaceNodes){
+            if (downPlaceNode == oldPlaceNode) downPlaceNode = newPlaceNode;
+        }
     }
 
     @Override
     public void traversal(NetTraversal netTraversal) {
-        if (!netTraversal.traversalTPFlow(this, downPlaceNode)) return;
-        netTraversal.transitionTraversal(this, downPlaceNode);
-        if (netTraversal.sholdTraversal(downPlaceNode))
-            downPlaceNode.traversal(netTraversal);
+        for (PlaceNode placeNode: downPlaceNodes) {
+            netTraversal.printTPFlow(this, placeNode);
+            if (netTraversal.isTraversalPlaceNode(this, placeNode))
+                placeNode.traversal(netTraversal);
+        }
+    }
+
+    public PlaceNode getWakeBeforePlaceNode() {
+        WakeTransitionNode wakeTransitionNode = (WakeTransitionNode)((SourcePlaceNode)downPlaceNodes.get(0)).getDownTransitionNode();
+        return wakeTransitionNode.getWakeBeforePlaceNode();
     }
 }

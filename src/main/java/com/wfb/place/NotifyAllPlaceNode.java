@@ -4,25 +4,25 @@ import com.wfb.adapter.PlaceNodeAdapter;
 import com.wfb.base.TransitionNode;
 import com.wfb.flow.NetTraversal;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class LockPlaceNode extends PlaceNodeAdapter {
-    private List<TransitionNode> upTransitionNodes = new ArrayList<>();
-    private List<TransitionNode> downTransitionNodes = new ArrayList<>();
+public class NotifyAllPlaceNode extends PlaceNodeAdapter {
 
-    public LockPlaceNode(int threadNumber, int tokenCnt, String name) {
+    private TransitionNode upTransitionNode ;
+    private List<TransitionNode> downTransitionNodes;
+
+    public NotifyAllPlaceNode(int threadNumber, int tokenCnt, String name) {
         super(threadNumber, tokenCnt, name);
+    }
+
+    @Override
+    public void addUpTransitionNode(TransitionNode node) {
+        upTransitionNode = node;
     }
 
     @Override
     public void addDownTransitionNode(TransitionNode node) {
         downTransitionNodes.add(node);
-    }
-
-    @Override
-    public void addUpTransitionNode(TransitionNode node) {
-        upTransitionNodes.add(node);
     }
 
     @Override

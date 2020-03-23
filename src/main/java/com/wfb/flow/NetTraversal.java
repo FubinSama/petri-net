@@ -3,30 +3,40 @@ package com.wfb.flow;
 import com.wfb.base.PlaceNode;
 import com.wfb.base.TransitionNode;
 
+/**
+ * 该接口定义了遍历函数走到某个变迁（或库所）后，
+ * 遍历它的后继库所（或变迁）时，是否输出该条弧？是否要遍历后继库所（或变迁）？
+ */
 public interface NetTraversal {
     /**
-     * 遍历到本库所，它指向某个变迁，格式化输出一个PT弧
+     * 当前处在placeNode，遍历了它的transitionNode后继，如何输出当前的PT弧
+     * @param placeNode 当前所处的位置
+     * @param transitionNode 它的某个后继变迁
+     * @return
      */
-    void placeTraversal(PlaceNode placeNode, TransitionNode transitionNode);
+    void printPTFlow(PlaceNode placeNode, TransitionNode transitionNode);
 
     /**
-     * 遍历到本变迁，它指向某个库所，格式化输出一个TP弧
+     * 当前处在transitionNode，遍历了它的placeNode后继，如何输出当前的TP弧
+     * @param transitionNode 当前所处的位置
+     * @param placeNode 它的某个后继库所
+     * @return
      */
-    void transitionTraversal(TransitionNode transitionNode, PlaceNode placeNode);
-
-    //遍历到本变迁，它指向某个库所，已经输出了该TP弧的信息，是否继续比遍历该库所
-    boolean sholdTraversal(PlaceNode placeNode);
-
-    //遍历到本库所，它指向某个变迁，已经输出了该PT弧的信息，是否继续比遍历该变迁
-    boolean sholdTraversal(TransitionNode transitionNode);
+    void printTPFlow(TransitionNode transitionNode, PlaceNode placeNode);
 
     /**
-     * 遍历到本库所，它指向某个变迁，形成了一个PT弧，该PT弧是否该遍历，并输出信息
+     * 当前处在transitionNode，它有一个placeNode后继，是否要遍历它
+     * @param transitionNode 当前的位置
+     * @param placeNode 确定是否要遍历的库所
+     * @return
      */
-    boolean traversalPTFlow(PlaceNode placeNode, TransitionNode transitionNode);
+    boolean isTraversalPlaceNode(TransitionNode transitionNode, PlaceNode placeNode);
 
     /**
-     * 遍历到本变迁，它指向某个库所，形成了一个TP弧，该TP弧是否该遍历，并输出信息
+     * 当前处在placeNode，它有一个transitionNode后继，是否要遍历它
+     * @param placeNode 当前的位置
+     * @param transitionNode 确定是否要遍历的变迁
+     * @return
      */
-    boolean traversalTPFlow(TransitionNode transitionNode, PlaceNode placeNode);
+    boolean isTraversalTransitionNode(PlaceNode placeNode, TransitionNode transitionNode);
 }

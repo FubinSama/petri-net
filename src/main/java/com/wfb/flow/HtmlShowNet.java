@@ -2,6 +2,7 @@ package com.wfb.flow;
 
 import com.wfb.base.PlaceNode;
 import com.wfb.base.TransitionNode;
+import com.wfb.place.Selection2PlaceNode;
 import com.wfb.utils.Util;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -16,41 +17,44 @@ public class HtmlShowNet implements NetTraversal {
 
     private Set<String> PTSet = new HashSet<>();
     private Set<String> TPSet = new HashSet<>();
+    private Set<String> placeSet = new HashSet<>();
+    private Set<String> transitionSet = new HashSet<>();
 
     @Override
-    public void placeTraversal(PlaceNode placeNode, TransitionNode transitionNode) {
-        if (placeNode.haveToken()) setNode(placeNode.getName(), placeNode.getName(), "circle", Util.getDescription(placeNode), placeNode.getClass().getSimpleName());
-        setNode(transitionNode.getName(), transitionNode.getDescription(), "rect", Util.getDescription(transitionNode),  transitionNode.getClass().getSimpleName());
-        setEdge(placeNode.getName(), transitionNode.getName());
+    public void printPTFlow(PlaceNode placeNode, TransitionNode transitionNode) {
+        printNode(transitionNode, placeNode, placeNode.getName(), transitionNode.getName());
     }
 
     @Override
-    public void transitionTraversal(TransitionNode transitionNode, PlaceNode placeNode) {
-        setNode(placeNode.getName(), placeNode.getName(), "circle", Util.getDescription(placeNode), placeNode.getClass().getSimpleName());
-        setEdge(transitionNode.getName(), placeNode.getName());
+    public void printTPFlow(TransitionNode transitionNode, PlaceNode placeNode) {
+        printNode(transitionNode, placeNode, transitionNode.getName(), placeNode.getName());
+    }
+
+    private void printNode(TransitionNode transitionNode, PlaceNode placeNode, String name, String name2) {
+        if (!placeSet.contains(placeNode.getName())) {
+            placeSet.add(placeNode.getName());
+            setNode(placeNode.getName(), placeNode.getName(), "circle",
+                    Util.getDescription(placeNode), placeNode.getClass().getSimpleName());
+        }
+        if (!transitionSet.contains(transitionNode.getName())) {
+            transitionSet.add(transitionNode.getName());
+            setNode(transitionNode.getName(), transitionNode.getDescription(), "rect",
+                    Util.getDescription(transitionNode),  transitionNode.getClass().getSimpleName());
+        }
+        setEdge(name, name2);
     }
 
     @Override
-    public boolean sholdTraversal(PlaceNode placeNode) {
-        return true;
-    }
-
-    @Override
-    public boolean sholdTraversal(TransitionNode transitionNode) {
-        return true;
-    }
-
-    @Override
-    public boolean traversalPTFlow(PlaceNode placeNode, TransitionNode transitionNode) {
-        if (PTSet.contains(placeNode.getName()+transitionNode.getName())) return false;
-        else PTSet.add(placeNode.getName()+transitionNode.getName());
-        return true;
-    }
-
-    @Override
-    public boolean traversalTPFlow(TransitionNode transitionNode, PlaceNode placeNode) {
+    public boolean isTraversalPlaceNode(TransitionNode transitionNode, PlaceNode placeNode) {
         if (TPSet.contains(transitionNode.getName()+placeNode.getName())) return false;
         else TPSet.add(transitionNode.getName()+placeNode.getName());
+        return true;
+    }
+
+    @Override
+    public boolean isTraversalTransitionNode(PlaceNode placeNode, TransitionNode transitionNode) {
+        if (PTSet.contains(placeNode.getName()+transitionNode.getName())) return false;
+        else PTSet.add(placeNode.getName()+transitionNode.getName());
         return true;
     }
 
@@ -68,7 +72,7 @@ public class HtmlShowNet implements NetTraversal {
         ps.println("    <script src=\"js/tipsy.js\"></script>");
         ps.println("</head>");
         ps.println("<body>");
-        ps.println("<svg width=1400 height=1000></svg>");
+        ps.println("<svg width=2000 height=1400></svg>");
         ps.println("<script type=\"text/javascript\">");
         ps.println("var g = new dagreD3.graphlib.Graph().setGraph({});");
     }
@@ -103,5 +107,8 @@ public class HtmlShowNet implements NetTraversal {
     public static void main(String[] args) {
         HtmlShowNet htmlShowNet = new HtmlShowNet(System.out);
         htmlShowNet.setNode("t1", "label", "shape", "description", "class");
+        PlaceNode placeNode = new Selection2PlaceNode(0, 0, "0");
+        htmlShowNet.setNode(placeNode.getName(), placeNode.getName(), "circle",
+                Util.getDescription(placeNode), placeNode.getClass().getSimpleName());
     }
 }
