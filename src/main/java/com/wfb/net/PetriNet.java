@@ -37,7 +37,7 @@ public class PetriNet {
     public void htmlShowNet(String path) {
         try (PrintStream ps = new PrintStream(new FileOutputStream(path))) {
             HtmlShowNet htmlShowNet = new HtmlShowNet(ps);
-            htmlShowNet.printHeader();
+            htmlShowNet.printHeader(curThreadPlaceNode.keySet());
             root.traversal(htmlShowNet);
             htmlShowNet.printFooter();
         } catch (Exception e) {
@@ -78,7 +78,7 @@ public class PetriNet {
         LockPlaceNode lockPlaceNode;
         if (lockPlaceNodeMap.containsKey(lockNumber)) lockPlaceNode = lockPlaceNodeMap.get(lockNumber);
         else {
-            lockPlaceNode = new LockPlaceNode(threadNumber, 1,
+            lockPlaceNode = new LockPlaceNode(0, 1,
                     netUtil.generateLockPlaceName(threadNumber, lockNumber));
             lockPlaceNodeMap.put(lockNumber, lockPlaceNode);
         }
@@ -93,7 +93,7 @@ public class PetriNet {
         LockPlaceNode lockPlaceNode;
         if (lockPlaceNodeMap.containsKey(lockNumber)) lockPlaceNode = lockPlaceNodeMap.get(lockNumber);
         else {
-            lockPlaceNode = new LockPlaceNode(threadNumber, 1,
+            lockPlaceNode = new LockPlaceNode(0, 1,
                     netUtil.generateLockPlaceName(threadNumber, lockNumber));
             lockPlaceNodeMap.put(lockNumber, lockPlaceNode);
         }

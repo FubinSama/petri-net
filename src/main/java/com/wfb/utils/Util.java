@@ -41,4 +41,11 @@ public class Util {
             return "this is a selection place node, it belongs thread:" + placeNode.getThreadNumber();
         }
     }
+
+    public static void main(String[] args) {
+        Util.setIidToLineMap("/home/wfb/毕设/calfuzzer/src/benchmarks/iidToLine.map");
+        iidToLineMap.forEach(item -> {
+            System.out.println(item);
+        });
+    }
 }

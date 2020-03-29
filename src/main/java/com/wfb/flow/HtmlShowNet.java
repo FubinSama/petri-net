@@ -34,12 +34,12 @@ public class HtmlShowNet implements NetTraversal {
         if (!placeSet.contains(placeNode.getName())) {
             placeSet.add(placeNode.getName());
             setNode(placeNode.getName(), placeNode.getName(), "circle",
-                    Util.getDescription(placeNode), placeNode.getClass().getSimpleName());
+                    Util.getDescription(placeNode), "T" + placeNode.getThreadNumber());
         }
         if (!transitionSet.contains(transitionNode.getName())) {
             transitionSet.add(transitionNode.getName());
             setNode(transitionNode.getName(), transitionNode.getDescription(), "rect",
-                    Util.getDescription(transitionNode),  transitionNode.getClass().getSimpleName());
+                    Util.getDescription(transitionNode),  "T" + transitionNode.getThreadNumber());
         }
         setEdge(name, name2);
     }
@@ -58,7 +58,11 @@ public class HtmlShowNet implements NetTraversal {
         return true;
     }
 
-    public void printHeader() {
+    public static String[] colors = new String[]{
+        "red", "pink", "blue", "yellow", "green", "orange", "brown", "purple", "grey"
+    };
+
+    public void printHeader(Set<Integer> threadSet) {
         ps.println("<!DOCTYPE html>");
         ps.println("<html lang=\"en\">");
         ps.println("<head>");
@@ -70,6 +74,16 @@ public class HtmlShowNet implements NetTraversal {
         ps.println("    <script src=\"js/d3.v4.min.js\"></script>");
         ps.println("    <script src=\"js/jquery-1.9.1.min.js\"></script>");
         ps.println("    <script src=\"js/tipsy.js\"></script>");
+        ps.println("<style>");
+        for(Integer thread: threadSet) {
+            ps.println("g." + "T" + thread + ">circle {\n" +
+                    "   fill: " + colors[thread % colors.length] + "; \n" +
+                    "}\n");
+            ps.println("g." + "T" + thread + ">rect {\n" +
+                    "   fill: " + colors[thread % colors.length] + "; \n" +
+                    "}\n");
+        }
+        ps.println("</style>");
         ps.println("</head>");
         ps.println("<body>");
         ps.println("<svg width=2000 height=1400></svg>");
