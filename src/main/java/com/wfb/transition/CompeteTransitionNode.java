@@ -40,8 +40,8 @@ public class CompeteTransitionNode extends TransitionNodeAdapter {
     @Override
     public void traversal(NetTraversal netTraversal) {
         if (downPlaceNode == null) return;
+        if (!netTraversal.isTraversalPlaceNode(this, downPlaceNode)) return;
         netTraversal.printTPFlow(this, downPlaceNode);
-        if (netTraversal.isTraversalPlaceNode(this, downPlaceNode))
-            downPlaceNode.traversal(netTraversal);
+        downPlaceNode.traversal(netTraversal);
     }
 }

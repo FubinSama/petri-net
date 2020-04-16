@@ -28,9 +28,10 @@ public class LockPlaceNode extends PlaceNodeAdapter {
     @Override
     public void traversal(NetTraversal netTraversal) {
         for (TransitionNode transitionNode: downTransitionNodes) {
-            netTraversal.printPTFlow(this, transitionNode);
-            if (netTraversal.isTraversalTransitionNode(this, transitionNode))
+            if (netTraversal.isTraversalTransitionNode(this, transitionNode)) {
+                netTraversal.printPTFlow(this, transitionNode);
                 transitionNode.traversal(netTraversal);
+            }
         }
     }
 }

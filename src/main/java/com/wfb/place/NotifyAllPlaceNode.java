@@ -8,7 +8,7 @@ import java.util.List;
 
 public class NotifyAllPlaceNode extends PlaceNodeAdapter {
 
-    private TransitionNode upTransitionNode ;
+    private TransitionNode upTransitionNode;
     private List<TransitionNode> downTransitionNodes;
 
     public NotifyAllPlaceNode(int threadNumber, int tokenCnt, String name) {
@@ -28,9 +28,10 @@ public class NotifyAllPlaceNode extends PlaceNodeAdapter {
     @Override
     public void traversal(NetTraversal netTraversal) {
         for (TransitionNode transitionNode: downTransitionNodes) {
-            netTraversal.printPTFlow(this, transitionNode);
-            if (netTraversal.isTraversalTransitionNode(this, transitionNode))
+            if (netTraversal.isTraversalTransitionNode(this, transitionNode)) {
+                netTraversal.printPTFlow(this, transitionNode);
                 transitionNode.traversal(netTraversal);
+            }
         }
     }
 }

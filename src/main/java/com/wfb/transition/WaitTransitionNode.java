@@ -42,9 +42,9 @@ public class WaitTransitionNode extends TransitionNodeAdapter {
     @Override
     public void traversal(NetTraversal netTraversal) {
         for (PlaceNode placeNode: downPlaceNodes) {
+            if (!netTraversal.isTraversalPlaceNode(this, placeNode)) continue;
             netTraversal.printTPFlow(this, placeNode);
-            if (netTraversal.isTraversalPlaceNode(this, placeNode))
-                placeNode.traversal(netTraversal);
+            placeNode.traversal(netTraversal);
         }
     }
 

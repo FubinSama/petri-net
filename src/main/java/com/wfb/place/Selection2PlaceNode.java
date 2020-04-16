@@ -35,8 +35,9 @@ public class Selection2PlaceNode extends PlaceNodeAdapter {
     @Override
     public void traversal(NetTraversal netTraversal) {
         if (downTransitionNode == null) return;
-        netTraversal.printPTFlow(this, downTransitionNode);
-        if (netTraversal.isTraversalTransitionNode(this, downTransitionNode))
+        if (netTraversal.isTraversalTransitionNode(this, downTransitionNode)) {
+            netTraversal.printPTFlow(this, downTransitionNode);
             downTransitionNode.traversal(netTraversal);
+        }
     }
 }

@@ -44,9 +44,9 @@ public class WakeTransitionNode extends TransitionNodeAdapter {
                 netTraversal.printPTFlow(placeNode, this);
         }
         if (downPlaceNode == null) return;
+        if (!netTraversal.isTraversalPlaceNode(this, downPlaceNode)) return;
         netTraversal.printTPFlow(this, downPlaceNode);
-        if (netTraversal.isTraversalPlaceNode(this, downPlaceNode))
-            downPlaceNode.traversal(netTraversal);
+        downPlaceNode.traversal(netTraversal);
     }
 
     public PlaceNode getWakeBeforePlaceNode() {

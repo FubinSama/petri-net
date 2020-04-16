@@ -9,6 +9,7 @@ public interface PlaceNode {
     void incToken();
     void subToken();
     int getTokenCnt();
+    int getCapacity();
     String getName();
     int getThreadNumber();
     void traversal(NetTraversal netTraversal);

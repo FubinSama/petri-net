@@ -45,6 +45,17 @@ public class PetriNet {
         }
     }
 
+    public void generatePXML(String path) {
+        try (PrintStream ps = new PrintStream(new FileOutputStream(path))) {
+            PXMLShowNet pxmlShowNet = new PXMLShowNet(ps);
+            pxmlShowNet.printHeader();
+            root.traversal(pxmlShowNet);
+            pxmlShowNet.printFooter();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void createRootNode(int threadNumber) {
         this.root = new SourcePlaceNode(threadNumber,1,
                 netUtil.generateSourcePlaceName(threadNumber));
@@ -295,8 +306,29 @@ public class PetriNet {
 //        petriNet.htmlShowNet("/home/wfb/毕设/calfuzzer/html/petri.html");
 //    }
 
+//    public static void main(String[] args) {
+////        Util.setIidToLineMap("");
+//        PetriNet petriNet = new PetriNet();
+//        petriNet.createRootNode(4);
+//        petriNet.addStartTransitionNode(0, 4, 6);
+//        petriNet.addAcqTransitionNode(0, 6, 7);
+//        petriNet.addWaitTransitionNode(0, 6, 7);
+//        petriNet.addStartTransitionNode(0, 4, 9);
+//        petriNet.addAcqTransitionNode(0, 9, 7);
+//        petriNet.addNotifyTransitionNode(0, 9, 7);
+//        petriNet.addRelTransitionNode(0, 9, 7);
+//        petriNet.connectNotifyWait(6, 7);
+//        petriNet.addNotifyTransitionNode(0, 6, 7);
+//        petriNet.addRelTransitionNode(0, 6, 7);
+//
+//        petriNet.consoleShowTransitions();
+//        System.out.println("--------------------");
+//        petriNet.consoleShowNet();
+//        System.out.println("--------------------");
+//        petriNet.htmlShowNet("/home/wfb/毕设/calfuzzer/html/petri.html");
+//    }
+
     public static void main(String[] args) {
-//        Util.setIidToLineMap("");
         PetriNet petriNet = new PetriNet();
         petriNet.createRootNode(4);
         petriNet.addStartTransitionNode(0, 4, 6);
@@ -310,10 +342,7 @@ public class PetriNet {
         petriNet.addNotifyTransitionNode(0, 6, 7);
         petriNet.addRelTransitionNode(0, 6, 7);
 
-//        petriNet.consoleShowTransitions();
-//        System.out.println("--------------------");
-//        petriNet.consoleShowNet();
-//        System.out.println("--------------------");
         petriNet.htmlShowNet("/home/wfb/毕设/calfuzzer/html/petri.html");
+        petriNet.generatePXML("/home/wfb/毕设/calfuzzer/html/petri.xml");
     }
 }

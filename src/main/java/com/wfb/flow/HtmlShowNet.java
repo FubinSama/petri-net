@@ -22,15 +22,17 @@ public class HtmlShowNet implements NetTraversal {
 
     @Override
     public void printPTFlow(PlaceNode placeNode, TransitionNode transitionNode) {
-        printNode(transitionNode, placeNode, placeNode.getName(), transitionNode.getName());
+        printNode(transitionNode, placeNode);
+        setEdge(placeNode.getName(), transitionNode.getName());
     }
 
     @Override
     public void printTPFlow(TransitionNode transitionNode, PlaceNode placeNode) {
-        printNode(transitionNode, placeNode, transitionNode.getName(), placeNode.getName());
+        printNode(transitionNode, placeNode);
+        setEdge(transitionNode.getName(), placeNode.getName());
     }
 
-    private void printNode(TransitionNode transitionNode, PlaceNode placeNode, String name, String name2) {
+    private void printNode(TransitionNode transitionNode, PlaceNode placeNode) {
         if (!placeSet.contains(placeNode.getName())) {
             placeSet.add(placeNode.getName());
             setNode(placeNode.getName(), placeNode.getName(), "circle",
@@ -41,7 +43,6 @@ public class HtmlShowNet implements NetTraversal {
             setNode(transitionNode.getName(), transitionNode.getDescription(), "rect",
                     Util.getDescription(transitionNode),  "T" + transitionNode.getThreadNumber());
         }
-        setEdge(name, name2);
     }
 
     @Override
@@ -115,6 +116,7 @@ public class HtmlShowNet implements NetTraversal {
     }
 
     private void setEdge(String name1, String name2) {
+        System.out.println(name1 + "=>" + name2);
         ps.println("g.setEdge('" + name1 + "', '" + name2 + "', {});");
     }
 
