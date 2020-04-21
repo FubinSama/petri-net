@@ -52,4 +52,9 @@ public class WakeTransitionNode extends TransitionNodeAdapter {
     public PlaceNode getWakeBeforePlaceNode() {
         return upPlaceNodes.get(0);
     }
+
+    @Override
+    public List<PlaceNode> getUpPlaceNode() {
+        return this.upPlaceNodes;
+    }
 }

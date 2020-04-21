@@ -11,18 +11,44 @@ import com.wfb.transition.*;
 
 import java.io.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
 
-public class PetriNet {
+public class PetriNet implements Serializable{
     private PlaceNode root;
-    private NetUtil netUtil = new NetUtil();
-    private Map<Integer, PlaceNode> curThreadPlaceNode = new HashMap<>();
+    transient private NetUtil netUtil = new NetUtil();
+    transient private Map<Integer, PlaceNode> curThreadPlaceNode = new HashMap<>();
     private ConcurrentHashMap<Integer, LockPlaceNode> lockPlaceNodeMap = new ConcurrentHashMap<>();
     // 某个锁资源的等待队列key:锁编号，value等待队列
-    private ConcurrentHashMap<Integer, CopyOnWriteArraySet<TransitionNode>> lockWaitSet = new ConcurrentHashMap<>();
-    private TransitionNode latestNotifyNode;
+    transient private ConcurrentHashMap<Integer, CopyOnWriteArraySet<TransitionNode>> lockWaitSet = new ConcurrentHashMap<>();
+    transient private TransitionNode latestNotifyNode;
+
+    // 用来存储所有的place和transition节点
+    public Map<String, PlaceNode> allPlaceNodes;
+    public Map<String, TransitionNode> allTransitionNodes;
+    public Map<Long, List<TransitionNode>> varTransitionNodes;
+
+    public void generateMap() {
+        this.allPlaceNodes = new HashMap<>();
+        this.allTransitionNodes = new HashMap<>();
+        this.varTransitionNodes = new HashMap<>();
+        GenerateMap generateMap = new GenerateMap(allPlaceNodes, allTransitionNodes, varTransitionNodes);
+        root.traversal(generateMap);
+    }
+
+    public void copyToFile(String fileName) {
+        File file = new File(fileName);
+        try(FileOutputStream out = new FileOutputStream(file)) {
+            try (ObjectOutputStream oos = new ObjectOutputStream(out)){
+                oos.writeObject(this);
+                oos.flush();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public void consoleShowNet() {
         NetTraversal consoleShowNet = new ConsoleShowNet();
@@ -343,6 +369,9 @@ public class PetriNet {
         petriNet.addRelTransitionNode(0, 6, 7);
 
         petriNet.htmlShowNet("/home/wfb/毕设/calfuzzer/html/petri.html");
-        petriNet.generatePXML("/home/wfb/毕设/calfuzzer/html/petri.xml");
+        petriNet.generatePXML("/home/wfb/毕设/calfuzzer/html/petri5.xml");
+        petriNet.generateMap();
+        petriNet.copyToFile("/home/wfb/毕设/calfuzzer/html/petri.obj");
+
     }
 }

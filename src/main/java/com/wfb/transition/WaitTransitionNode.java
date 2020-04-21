@@ -52,4 +52,11 @@ public class WaitTransitionNode extends TransitionNodeAdapter {
         WakeTransitionNode wakeTransitionNode = (WakeTransitionNode)((SourcePlaceNode)downPlaceNodes.get(0)).getDownTransitionNode();
         return wakeTransitionNode.getWakeBeforePlaceNode();
     }
+
+    @Override
+    public List<PlaceNode> getUpPlaceNode() {
+        List<PlaceNode> rs = new ArrayList<>();
+        rs.add(this.upPlaceNode);
+        return rs;
+    }
 }

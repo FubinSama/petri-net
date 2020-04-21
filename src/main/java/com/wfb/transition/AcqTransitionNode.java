@@ -3,7 +3,6 @@ package com.wfb.transition;
 import com.wfb.adapter.TransitionNodeAdapter;
 import com.wfb.base.PlaceNode;
 import com.wfb.flow.NetTraversal;
-import lombok.AllArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,5 +36,10 @@ public class AcqTransitionNode extends TransitionNodeAdapter {
         if (!netTraversal.isTraversalPlaceNode(this, downPlaceNode)) return;
         netTraversal.printTPFlow(this, downPlaceNode);
         downPlaceNode.traversal(netTraversal);
+    }
+
+    @Override
+    public List<PlaceNode> getUpPlaceNode() {
+        return this.upPlaceNodes;
     }
 }

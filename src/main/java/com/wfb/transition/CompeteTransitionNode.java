@@ -44,4 +44,9 @@ public class CompeteTransitionNode extends TransitionNodeAdapter {
         netTraversal.printTPFlow(this, downPlaceNode);
         downPlaceNode.traversal(netTraversal);
     }
+
+    @Override
+    public List<PlaceNode> getUpPlaceNode() {
+        return this.upPlaceNodes;
+    }
 }

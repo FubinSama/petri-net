@@ -2,7 +2,10 @@ package com.wfb.base;
 
 import com.wfb.flow.NetTraversal;
 
-public interface TransitionNode {
+import java.io.Serializable;
+import java.util.List;
+
+public interface TransitionNode extends Serializable {
     int getThreadNumber();
     int getIid();
     String getName();
@@ -11,4 +14,5 @@ public interface TransitionNode {
     void addDownPlaceNode(PlaceNode node);
     void changeDownPlaceNode(PlaceNode oldPlaceNode, PlaceNode newPlaceNode);
     void traversal(NetTraversal netTraversal);
+    List<PlaceNode> getUpPlaceNode();
 }

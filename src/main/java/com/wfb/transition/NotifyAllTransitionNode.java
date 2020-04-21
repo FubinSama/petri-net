@@ -44,4 +44,11 @@ public class NotifyAllTransitionNode extends TransitionNodeAdapter {
     public PlaceNode getNotify2BeforePlaceNode() {
         return downPlaceNodes.get(1);
     }
+
+    @Override
+    public List<PlaceNode> getUpPlaceNode() {
+        List<PlaceNode> rs = new ArrayList<>();
+        rs.add(this.upPlaceNode);
+        return rs;
+    }
 }

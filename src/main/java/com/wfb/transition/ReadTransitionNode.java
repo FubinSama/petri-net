@@ -4,6 +4,9 @@ import com.wfb.adapter.TransitionNodeAdapter;
 import com.wfb.base.PlaceNode;
 import com.wfb.flow.NetTraversal;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ReadTransitionNode extends TransitionNodeAdapter {
     private PlaceNode upPlaceNode;
     private PlaceNode downPlaceNode;
@@ -35,5 +38,12 @@ public class ReadTransitionNode extends TransitionNodeAdapter {
         if (!netTraversal.isTraversalPlaceNode(this, downPlaceNode)) return;
         netTraversal.printTPFlow(this, downPlaceNode);
         downPlaceNode.traversal(netTraversal);
+    }
+
+    @Override
+    public List<PlaceNode> getUpPlaceNode() {
+        List<PlaceNode> rs = new ArrayList<>();
+        rs.add(this.upPlaceNode);
+        return rs;
     }
 }

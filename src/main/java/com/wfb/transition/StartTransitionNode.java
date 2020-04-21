@@ -40,4 +40,11 @@ public class StartTransitionNode extends TransitionNodeAdapter {
             placeNode.traversal(netTraversal);
         }
     }
+
+    @Override
+    public List<PlaceNode> getUpPlaceNode() {
+        List<PlaceNode> rs = new ArrayList<>();
+        rs.add(this.upPlaceNode);
+        return rs;
+    }
 }

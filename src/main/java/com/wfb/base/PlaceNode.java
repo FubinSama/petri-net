@@ -2,7 +2,9 @@ package com.wfb.base;
 
 import com.wfb.flow.NetTraversal;
 
-public interface PlaceNode {
+import java.io.Serializable;
+
+public interface PlaceNode extends Serializable {
     void addDownTransitionNode(TransitionNode node);
     void addUpTransitionNode(TransitionNode node);
     boolean haveToken();

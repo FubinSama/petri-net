@@ -6,6 +6,8 @@ import com.wfb.flow.NetTraversal;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.List;
+
 @AllArgsConstructor
 @Getter
 public class TransitionNodeAdapter implements TransitionNode {
@@ -32,5 +34,10 @@ public class TransitionNodeAdapter implements TransitionNode {
     @Override
     public void traversal(NetTraversal netTraversal) {
 
+    }
+
+    @Override
+    public List<PlaceNode> getUpPlaceNode() {
+        return null;
     }
 }

@@ -60,10 +60,10 @@ public class PXMLShowNet implements NetTraversal {
     }
 
     public void printHeader() {
-        ps.println("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>");
+        ps.println("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>");
         ps.println("<pnml>");
-        ps.println("<net id=\"Net-One\" type=\"P/T net\">");
-        ps.println("<token id=\"Default\" enabled=\"true\" red=\"0\" green=\"0\" blue=\"0\" />");
+        ps.println("    <net>");
+        ps.println("        <token id=\"Default\" red=\"0\" green=\"0\" blue=\"0\"/>");
     }
 
     public void printFooter() {
@@ -72,11 +72,11 @@ public class PXMLShowNet implements NetTraversal {
     }
 
     private void printPlace(PlaceNode placeNode) {
-        ps.println("<place id=\"" + placeNode.getName() + "\">");
+        ps.println("        <place id=\"" + placeNode.getName() + "\">");
         printPosition();
         printName(placeNode.getName());
-        printInitialMarking(placeNode.getTokenCnt());
         printCapacity(placeNode.getCapacity());
+        printInitialMarking(placeNode.getTokenCnt());
         ps.println("</place>");
     }
 
@@ -84,11 +84,11 @@ public class PXMLShowNet implements NetTraversal {
         ps.println("<transition id=\"" + transitionNode.getName() + "\">");
         printPosition();
         printName(transitionNode.getDescription());
+        printInfiniteServer(false);
+        printTimed(false);
+        printPriority(1);
         printOrientation(0);
         printRate(1.0);
-        printTimed(false);
-        printInfiniteServer(false);
-        printPriority(1);
         ps.println("</transition>");
     }
 
@@ -163,12 +163,10 @@ public class PXMLShowNet implements NetTraversal {
     private void printArc(String source, String target) {
         ps.println("<arc id=\"" + source + " to " + target +
                 "\" source=\"" + source + "\" target=\"" + target + "\">");
-        ps.println("<graphics />");
-        printInscription(1);
-        printTagged(false);
         printArcPath("000");
         printArcPath("001");
         ps.println("<type value=\"normal\" />");
+        printInscription(1);
         ps.println("</arc>");
     }
 
