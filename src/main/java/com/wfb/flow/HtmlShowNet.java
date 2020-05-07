@@ -87,7 +87,7 @@ public class HtmlShowNet implements NetTraversal {
         ps.println("</style>");
         ps.println("</head>");
         ps.println("<body>");
-        ps.println("<svg width=2000 height=1400></svg>");
+        ps.println("<svg width=1400 height=1000></svg>");
         ps.println("<script type=\"text/javascript\">");
         ps.println("var g = new dagreD3.graphlib.Graph().setGraph({});");
     }
@@ -116,7 +116,7 @@ public class HtmlShowNet implements NetTraversal {
     }
 
     private void setEdge(String name1, String name2) {
-        System.out.println(name1 + "=>" + name2);
+//        System.out.println(name1 + "=>" + name2);
         ps.println("g.setEdge('" + name1 + "', '" + name2 + "', {});");
     }
 

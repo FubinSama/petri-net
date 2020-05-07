@@ -3,6 +3,7 @@ package com.wfb.transition;
 import com.wfb.adapter.TransitionNodeAdapter;
 import com.wfb.base.PlaceNode;
 import com.wfb.flow.NetTraversal;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
 public class ReadTransitionNode extends TransitionNodeAdapter {
     private PlaceNode upPlaceNode;
     private PlaceNode downPlaceNode;
-    private long memory;
+    @Getter private long memory;
 
     public ReadTransitionNode(int iid, int threadNumber, String name, long memory, String description) {
         super(iid, threadNumber, name, description);

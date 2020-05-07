@@ -2,6 +2,7 @@ package com.wfb.flow;
 
 import com.wfb.base.PlaceNode;
 import com.wfb.base.TransitionNode;
+import com.wfb.transition.ReadTransitionNode;
 import com.wfb.transition.WriteTransitionNode;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -47,7 +48,11 @@ public class GenerateMap implements NetTraversal{
         if (transitionNode instanceof WriteTransitionNode) {
             WriteTransitionNode writeTransitionNode = (WriteTransitionNode) transitionNode;
             long memory = writeTransitionNode.getMemory();
-
+            generateVarTransition(memory, transitionNode);
+        } else if (transitionNode instanceof ReadTransitionNode) {
+            ReadTransitionNode readTransitionNode = (ReadTransitionNode) transitionNode;
+            long memory = readTransitionNode.getMemory();
+            generateVarTransition(memory, transitionNode);
         }
     }
 

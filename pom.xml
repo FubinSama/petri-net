@@ -14,7 +14,7 @@
             <url>https://raw.githubusercontent.com/sarahtattersall/JPowerGraph/master/releases/</url>
             <snapshots>
                 <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
+                <updatePolicy>never</updatePolicy>
             </snapshots>
         </repository>
 
@@ -23,17 +23,16 @@
             <url>https://raw.githubusercontent.com/sarahtattersall/PIPEMarkovChain/mvn-repo/</url>
             <snapshots>
                 <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
+                <updatePolicy>never</updatePolicy>
             </snapshots>
         </repository>
-
 
         <repository>
             <id>PIPECore-mvn-repo</id>
             <url>https://raw.githubusercontent.com/sarahtattersall/PIPECore/mvn-repo/</url>
             <snapshots>
                 <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
+                <updatePolicy>never</updatePolicy>
             </snapshots>
         </repository>
 
@@ -42,10 +41,9 @@
             <url>https://raw.githubusercontent.com/sarahtattersall/PIPEAnalysis/mvn-repo/</url>
             <snapshots>
                 <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
+                <updatePolicy>never</updatePolicy>
             </snapshots>
         </repository>
-
     </repositories>
 
     <dependencies>
@@ -54,18 +52,12 @@
             <artifactId>lombok</artifactId>
             <version>1.18.12</version>
         </dependency>
-        <dependency>
-            <groupId>org.rendersnake</groupId>
-            <artifactId>rendersnake</artifactId>
-            <version>1.9.0</version>
-        </dependency>
 
         <dependency>
             <groupId>uk.ac.imperial</groupId>
             <artifactId>pipe-core</artifactId>
             <version>1.0.4-SNAPSHOT</version>
         </dependency>
-
 
         <dependency>
             <groupId>uk.ac.imperial</groupId>

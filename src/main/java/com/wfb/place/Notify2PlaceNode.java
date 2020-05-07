@@ -4,14 +4,15 @@ import com.wfb.adapter.PlaceNodeAdapter;
 import com.wfb.base.TransitionNode;
 import com.wfb.flow.NetTraversal;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class NotifyAllPlaceNode extends PlaceNodeAdapter {
+public class Notify2PlaceNode extends PlaceNodeAdapter {
 
     private TransitionNode upTransitionNode;
-    private List<TransitionNode> downTransitionNodes;
+    private List<TransitionNode> downTransitionNodes = new ArrayList<>();
 
-    public NotifyAllPlaceNode(int threadNumber, int tokenCnt, String name) {
+    public Notify2PlaceNode(int threadNumber, int tokenCnt, String name) {
         super(threadNumber, tokenCnt, name);
     }
 

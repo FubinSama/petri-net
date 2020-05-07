@@ -3,16 +3,11 @@ package com.wfb.net;
 import com.wfb.base.PlaceNode;
 import com.wfb.base.TransitionNode;
 import com.wfb.flow.*;
-import com.wfb.place.LockPlaceNode;
-import com.wfb.place.Selection1PlaceNode;
-import com.wfb.place.Selection2PlaceNode;
-import com.wfb.place.SourcePlaceNode;
+import com.wfb.place.*;
 import com.wfb.transition.*;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
 
@@ -20,6 +15,7 @@ public class PetriNet implements Serializable{
     private PlaceNode root;
     transient private NetUtil netUtil = new NetUtil();
     transient private Map<Integer, PlaceNode> curThreadPlaceNode = new HashMap<>();
+    //存储锁资源编号和锁库所的映射
     private ConcurrentHashMap<Integer, LockPlaceNode> lockPlaceNodeMap = new ConcurrentHashMap<>();
     // 某个锁资源的等待队列key:锁编号，value等待队列
     transient private ConcurrentHashMap<Integer, CopyOnWriteArraySet<TransitionNode>> lockWaitSet = new ConcurrentHashMap<>();
@@ -249,10 +245,29 @@ public class PetriNet implements Serializable{
                 netUtil.generateTransitionName(iid, threadNumber),
                 "notify(" + threadNumber + "," + lockNumber + ")");
         addTransitionNode(transitionNode, threadNumber);
-        SourcePlaceNode placeNode = new SourcePlaceNode(threadNumber, 0,
+        Notify2PlaceNode placeNode = new Notify2PlaceNode(threadNumber, 0,
                 netUtil.generateSourcePlaceName(threadNumber));
         FlowUtil.createTPFlow(transitionNode, placeNode);
-        latestNotifyNode = transitionNode;
+//        latestNotifyNode = transitionNode;
+
+        // TODO concat notify and wait transition
+        CopyOnWriteArraySet<TransitionNode> set = lockWaitSet.getOrDefault(lockNumber, new CopyOnWriteArraySet<>()); //获取当前锁的等待队列
+        Iterator<TransitionNode> iterator = set.iterator();
+        while (iterator.hasNext()) {
+            WaitTransitionNode waitTransitionNode = (WaitTransitionNode) iterator.next();
+            if (waitTransitionNode.getThreadNumber() == threadNumber) continue;
+            //获取wakeBeforePlaceNode节点
+            PlaceNode wakeBeforePlaceNode = waitTransitionNode.getWakeBeforePlaceNode();
+
+            //创建notify2变迁，并与notify2BeforePlaceNode绑定
+            Notify2TransitionNode notify2TransitionNode = new Notify2TransitionNode(iid, threadNumber,
+                    netUtil.generateTransitionName(iid, threadNumber),
+                    "notify2");
+            FlowUtil.createPTFlow(placeNode, notify2TransitionNode);
+
+            //连接notify2变迁和wakeBeforePlaceNode
+            FlowUtil.createTPFlow(notify2TransitionNode, wakeBeforePlaceNode);
+        }
     }
 
     public void addNotifyAllTransitionNode(int iid, int threadNumber, int lockNumber) {
@@ -261,7 +276,26 @@ public class PetriNet implements Serializable{
                 "notifyAll(" + threadNumber + "," + lockNumber + ")");
         addTransitionNode(transitionNode, threadNumber);
         //TODO 实现notifyAll
-        latestNotifyNode = transitionNode;
+//        latestNotifyNode = transitionNode;
+
+        CopyOnWriteArraySet<TransitionNode> set = lockWaitSet.getOrDefault(lockNumber, new CopyOnWriteArraySet<>()); //获取当前锁的等待队列
+        Iterator<TransitionNode> iterator = set.iterator();
+        while (iterator.hasNext()) {
+            WaitTransitionNode waitTransitionNode = (WaitTransitionNode) iterator.next();
+            // 获取wakeBeforePlaceNode节点
+            PlaceNode wakeBeforePlaceNode = waitTransitionNode.getWakeBeforePlaceNode();
+            // 创建notify2BeforePlaceNode
+            SourcePlaceNode notify2BeforePlaceNode = new SourcePlaceNode(threadNumber, 0,
+                    netUtil.generateSourcePlaceName(threadNumber));
+            FlowUtil.createTPFlow(transitionNode, notify2BeforePlaceNode);
+            // 创建notify2Transition
+            Notify2TransitionNode notify2TransitionNode = new Notify2TransitionNode(iid, threadNumber,
+                    netUtil.generateTransitionName(iid, threadNumber), "notify2");
+            FlowUtil.createPTFlow(notify2BeforePlaceNode, notify2TransitionNode);
+            //连接notify2变迁和wakeBeforePlaceNode
+            FlowUtil.createTPFlow(notify2TransitionNode, wakeBeforePlaceNode);
+        }
+        set.clear(); //删除所有的等待线程，因为notifyAll原则上可以唤醒所有线程
     }
 
     /**
@@ -364,14 +398,13 @@ public class PetriNet implements Serializable{
         petriNet.addAcqTransitionNode(0, 9, 7);
         petriNet.addNotifyTransitionNode(0, 9, 7);
         petriNet.addRelTransitionNode(0, 9, 7);
-        petriNet.connectNotifyWait(6, 7);
+//        petriNet.connectNotifyWait(6, 7);
         petriNet.addNotifyTransitionNode(0, 6, 7);
         petriNet.addRelTransitionNode(0, 6, 7);
 
-        petriNet.htmlShowNet("/home/wfb/毕设/calfuzzer/html/petri.html");
-        petriNet.generatePXML("/home/wfb/毕设/calfuzzer/html/petri5.xml");
+        petriNet.htmlShowNet("/home/wfb/毕设/calfuzzer/source/petri5.html");
+        petriNet.generatePXML("/home/wfb/毕设/calfuzzer/source/petri5.xml");
         petriNet.generateMap();
-        petriNet.copyToFile("/home/wfb/毕设/calfuzzer/html/petri.obj");
-
+        petriNet.copyToFile("/home/wfb/毕设/calfuzzer/source/petri5.obj");
     }
 }

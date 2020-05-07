@@ -10,6 +10,7 @@ public interface TransitionNode extends Serializable {
     int getIid();
     String getName();
     String getDescription();
+    int getLineNumber();
     void addUpPlaceNode(PlaceNode node);
     void addDownPlaceNode(PlaceNode node);
     void changeDownPlaceNode(PlaceNode oldPlaceNode, PlaceNode newPlaceNode);
