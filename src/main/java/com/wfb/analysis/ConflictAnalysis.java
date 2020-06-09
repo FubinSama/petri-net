@@ -44,7 +44,7 @@ public class ConflictAnalysis {
             //判断该状态M是否大于等于M(p)
             int cnt = 0;
             for (String p: map.keySet()) {
-                int  m = classifiedState.getTokens(p).get("Default");
+                int  m = classifiedState.getTokens(p).getOrDefault("Default", 0);
                 if (m >= map.get(p)) ++cnt;
             }
             if (cnt == map.size()) return true;

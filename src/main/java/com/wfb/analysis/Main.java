@@ -10,7 +10,7 @@ public class Main {
         PetriNet petriNet = PetriUtil.readPetriNet(petriFile);
         System.out.println(petriNet);
 
-//        ConflictAnalysis conflictAnalysis = new ConflictAnalysis(pnmlFile, petriFile);
+        ConflictAnalysis conflictAnalysis = new ConflictAnalysis(pnmlFile, petriFile);
 //        boolean is = conflictAnalysis.isConcurrency("T16", "T6");
 //        System.out.println(is);
     }
