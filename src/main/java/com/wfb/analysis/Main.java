@@ -11,7 +11,7 @@ public class Main {
         System.out.println(petriNet);
 
         ConflictAnalysis conflictAnalysis = new ConflictAnalysis(pnmlFile, petriFile);
-//        boolean is = conflictAnalysis.isConcurrency("T16", "T6");
-//        System.out.println(is);
+        boolean is = conflictAnalysis.isConcurrency("T16", "T6");
+        System.out.println(is);
     }
 }

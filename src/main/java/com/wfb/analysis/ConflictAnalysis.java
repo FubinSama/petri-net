@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Map;
 
 public class ConflictAnalysis {
+    public static final int threads = 4;
+    public static final int maxNumberOfStates = 100_000;
     public Collection<Record> records;
     public Map<Integer, ClassifiedState> stateMappings;
     public PetriNet petriNet;
@@ -32,7 +34,7 @@ public class ConflictAnalysis {
     private ConflictAnalysis(String pnmlFile) throws Exception{
         File file = new File(pnmlFile);
         StateSpaceLoader loader = new StateSpaceLoader(file);
-        StateSpaceExplorer.StateSpaceExplorerResults results = loader.calculateResult(4);
+        StateSpaceExplorer.StateSpaceExplorerResults results = loader.calculateResult(threads, maxNumberOfStates);
         StateSpaceLoader.Results results1 = loader.loadStateSpace();
         this.records = results1.records;
         this.stateMappings = results1.stateMappings;

@@ -53,7 +53,7 @@ public class StateSpaceLoader {
      * @param threads across which to spread work
      * @return state space explorer results
      */
-    public StateSpaceExplorer.StateSpaceExplorerResults calculateResult(int threads)
+    public StateSpaceExplorer.StateSpaceExplorerResults calculateResult(int threads, int maxNumberOfStates)
             throws Exception{
 
         KryoStateIO stateWriter = new KryoStateIO();
@@ -62,7 +62,7 @@ public class StateSpaceLoader {
         if (petriNet == null) {
             throw new Exception("Error in loaded Petri net, could not read PNML file.");
         }
-        ExplorerUtilities explorerUtils = new BoundedExplorerUtilities(petriNet, threads);
+        ExplorerUtilities explorerUtils = new BoundedExplorerUtilities(petriNet, maxNumberOfStates);
         VanishingExplorer vanishingExplorer = new SimpleVanishingExplorer();
         return generateStateSpace(stateWriter, temporaryTransitions, temporaryStates, petriNet, explorerUtils,
                 vanishingExplorer, threads);
